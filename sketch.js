@@ -54,7 +54,12 @@ function draw() {
 
   background("cyan");
   
-  
+  stroke("black");
+  textSize(20);
+  fill("black");
+  text("Survival Time: " + survivalTime , 100,50);
+  text("score: " + score , 480,50);
+
   if(gameState === PLAY){
      if(keyDown("space")&& monkey.y >= 150) {
       monkey.velocityY = -10;
@@ -62,21 +67,25 @@ function draw() {
   monkey.velocityY = monkey.velocityY + 0.8;
     
     
-  stroke("black");
-  textSize(20);
-  fill("black");
+  
   survivalTime= Math.ceil(frameCount/frameRate())
-  text("Survival Time: " + survivalTime , 100,50);
-    
+  
+  if (ground.x < 200){
+    ground.x = ground.width/2;
+  }
+     
     
   stroke("white");
   textSize(20);
   fill("white");
   if(monkey.isTouching(foodGroup)){
     score = score+2
+    foodGroup.destroyEach();
     
   }
-  text("score: " + score , 480,50);
+  if(monkey.isTouching(obstacleGroup)){
+    gameState=END;
+    }
     
   food();
   stones();
@@ -100,16 +109,10 @@ function draw() {
   
   
   
-  if (ground.x < 200){
-      ground.x = ground.width/2;
-    }
-     
   monkey.collide(invisible); 
   
   
-  if(monkey.isTouching(obstacleGroup)){
-     gameState=END;
-     }
+  
   
   
   drawSprites();
